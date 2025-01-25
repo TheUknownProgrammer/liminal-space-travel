@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liminal Space. Recap!</title>
+    <meta name="author" content="tomer agosin" />
+    <style type="text/css">
+      html,
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-image: url(resources/liminal_0.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+      }
+      #box {
+        height: 200px;
+        width: 200px;
+        color: white;
+        text-align: center;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border: 3px solid white;
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+        font-size: 1rem;
+        cursor: pointer;
+        user-select: none;
+        background-image: url("resources/liminal_1.png");
+        background-size: cover;
+        background-position: center;
+        transition: 0.2s;
+        opacity: 0.8;
+        background-clip: padding-box;
+      }
+      #box:hover {
+        opacity: 1;
+        scale: 1.1;
+      }
+      #box-text {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <span id="box-text"
+        >Tap Me 5 More Times!<br />You Clicked Total Of 0.</span
+      >
+    </div>
+    <script type="text/javascript">
+      // make an array of sequences that holds 5 more arrays with 10 images of liminal space, after all the images previewd, there will be creepy music and image.
+
+      const body = document.body;
+      const box = document.getElementById("box");
+      const boxText = document.getElementById("box-text");
+
+      const requiredClickSession = 5;
+      var images = [];
+      var index = 0;
+      var clicks = 0;
+
+      const liminal_images_count = 13;
+
+      while (images.length <= liminal_images_count)
+        images.push("resources/liminal_" + images.length + ".png");
+
+      function randomizeArray(array) {
+        array.sort((a, b) => Math.random() - 0.5);
+      }
+
+      function changeImage() {
+        clicks++;
+        if(clicks == images.length * requiredClickSession) {
+          clicks = 0;
+        }
+        var currentClickSession =
+          requiredClickSession - (Math.abs(clicks) % requiredClickSession);
+        boxText.innerHTML = `Tap Me <u><strong>${currentClickSession}</strong></u> More Time${
+          currentClickSession > 1 ? "s" : ""
+        }!<br>You Clicked Total Of ${clicks}/${images.length * 5}.`;
+
+        if (clicks % requiredClickSession == 0) {
+          index = index < images.length - 1 ? index + 1 : 0;
+          if (index == images.length - 1) {
+            randomizeArray(images);
+          }
+          box.style.backgroundImage = `url(${
+            images[index + 1 > images.length - 1 ? 0 : index + 1]
+          })`; // this.style.backgroundColor == "purple" ? "green" : "purple"
+          body.style.backgroundImage = "url(" + images[index] + ")";
+        }
+      }
+
+      function init() {
+        randomizeArray(images);
+        box.style.backgroundImage = `url(${images[1]})`; // this.style.backgroundColor == "purple" ? "green" : "purple"
+        body.style.backgroundImage = "url(" + images[0] + ")";
+        box.addEventListener("click", changeImage);
+      }
+
+      init();
+    </script>
+  </body>
+</html>
